@@ -1,0 +1,5 @@
+# Netlify build settings (use when this folder is the site root, or set
+# "Base directory" in Netlify to this folder in a monorepo after fixing Git submodules).
+[build]
+  command = "npm run build"
+  publish = "build"
