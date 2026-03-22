@@ -2,7 +2,7 @@ import './PrivacyPolicyPage.css';
 
 const EFFECTIVE_DATE = '22.03.2026';
 const CONTACT_EMAIL = 'ikutsia@gmail.com';
-const POLICY_URL = 'https://privacy-bolomde.netlify.app/';
+const POLICY_URL = 'https://privacy-b.netlify.app/';
 
 export default function PrivacyPolicyPage() {
   return (
