@@ -23,6 +23,11 @@
   line-height: 1.55;
 }
 
+.pp-wrap[data-lang='ka'] {
+  font-family: 'Noto Sans Georgian', 'Noto Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI,
+    Roboto, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
 .pp-wrap a {
   color: var(--accent2);
   text-decoration: none;
@@ -34,16 +39,59 @@
 .pp-hero {
   max-width: 900px;
   margin: 0 auto;
-  padding: 28px 18px 0;
+  padding: 22px 18px 18px;
 }
 
-.pp-hero {
-  margin-top: 0;
-  padding-bottom: 18px;
+.pp-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px 24px;
 }
 
-.pp-hero {
-  padding-top: 22px;
+.pp-hero-main {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.pp-lang {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.pp-lang-btn {
+  padding: 8px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.pp-lang-btn:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pp-lang-btn--active {
+  color: var(--bg0);
+  background: var(--accent);
+  border-color: rgba(104, 240, 193, 0.55);
+}
+
+.pp-lang-btn--active:hover {
+  color: var(--bg0);
+  background: var(--accent);
 }
 
 .pp-kicker {

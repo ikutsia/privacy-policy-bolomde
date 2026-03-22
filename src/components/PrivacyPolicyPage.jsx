@@ -1,94 +1,101 @@
+import { useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { POLICY_META, translations } from '../content/privacyPolicyStrings';
 import './PrivacyPolicyPage.css';
 
-const EFFECTIVE_DATE = '22.03.2026';
-const CONTACT_EMAIL = 'ikutsia@gmail.com';
-const POLICY_URL = 'https://privacy-b.netlify.app/';
-
 export default function PrivacyPolicyPage() {
+  const { pathname } = useLocation();
+  const locale = pathname.replace(/\/$/, '') === '/ka' ? 'ka' : 'en';
+  const t = translations[locale];
+
+  useEffect(() => {
+    document.documentElement.lang = t.htmlLang;
+    document.title = t.documentTitle;
+  }, [t.htmlLang, t.documentTitle]);
+
+  const { effectiveDate, contactEmail, policyUrl } = POLICY_META;
+
   return (
-    <div className="pp-wrap">
+    <div className="pp-wrap" data-lang={locale}>
       <header className="pp-hero">
-        <div className="pp-kicker">
-          <span className="pp-dot" aria-hidden="true" />
-          Privacy Policy
+        <div className="pp-hero-top">
+          <div className="pp-hero-main">
+            <div className="pp-kicker">
+              <span className="pp-dot" aria-hidden="true" />
+              {t.kicker}
+            </div>
+            <h1 className="pp-title">{t.title}</h1>
+            <p className="pp-sub">
+              {t.effectiveLabel} {effectiveDate}
+            </p>
+          </div>
+          <nav className="pp-lang" aria-label={t.langNavLabel}>
+            <NavLink
+              className={({ isActive }) =>
+                `pp-lang-btn${isActive ? ' pp-lang-btn--active' : ''}`
+              }
+              end
+              to="/"
+            >
+              English
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `pp-lang-btn${isActive ? ' pp-lang-btn--active' : ''}`
+              }
+              to="/ka"
+            >
+              ქართული
+            </NavLink>
+          </nav>
         </div>
-        <h1 className="pp-title">Privacy Policy for Bolomde!</h1>
-        <p className="pp-sub">
-          Effective Date: {EFFECTIVE_DATE}
-        </p>
       </header>
 
       <main className="pp-main" role="main">
-        <section className="pp-section">
-          <h2 className="pp-h2">1. Introduction</h2>
-          <p>
-            Bolomde! (“we”, “our”, or “the App”) is committed to protecting the privacy and
-            security of our users. This Privacy Policy explains how information is handled when you
-            use the App.
-          </p>
-        </section>
+        {t.sections.map((section) => {
+          if (section.id === 'contact') {
+            return (
+              <section key={section.id} className="pp-section">
+                <h2 className="pp-h2">{section.title}</h2>
+                <p>{t.contactLead}</p>
+                <p>
+                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                </p>
+              </section>
+            );
+          }
 
-        <section className="pp-section">
-          <h2 className="pp-h2">2. Information We Collect</h2>
-          <p>
-            Our App does not collect, store, or share any personal information. All affirmations
-            and content are stored locally on your device and are accessible offline.
-          </p>
-        </section>
+          if (section.changes) {
+            return (
+              <section key={section.id} className="pp-section">
+                <h2 className="pp-h2">{section.title}</h2>
+                <p>
+                  {section.changes.before}
+                  <a href={policyUrl} rel="noopener noreferrer">
+                    {policyUrl}
+                  </a>
+                  {section.changes.after}
+                </p>
+              </section>
+            );
+          }
 
-        <section className="pp-section">
-          <h2 className="pp-h2">3. Data Usage</h2>
-          <ul className="pp-list">
-            <li>The App does not transmit data to any servers or third parties.</li>
-            <li>No analytics, tracking, advertising, or monitoring is performed.</li>
-            <li>All content remains private and fully on your device.</li>
-          </ul>
-        </section>
-
-        <section className="pp-section">
-          <h2 className="pp-h2">4. Security</h2>
-          <p>
-            We have designed the App to ensure that your data remains completely private. Since
-            all data is stored locally and no personal information is collected, there is no risk
-            of privacy breaches from the App.
-          </p>
-        </section>
-
-        <section className="pp-section">
-          <h2 className="pp-h2">5. Third-Party Services</h2>
-          <p>
-            The App does not use any third-party services, SDKs, or external libraries that could
-            access or share user information.
-          </p>
-        </section>
-
-        <section className="pp-section">
-          <h2 className="pp-h2">6. Children’s Privacy</h2>
-          <p>
-            Our App does not target children and does not knowingly collect any data from users
-            under the age of 13.
-          </p>
-        </section>
-
-        <section className="pp-section">
-          <h2 className="pp-h2">7. Changes to This Privacy Policy</h2>
-          <p>
-            We may update this Privacy Policy from time to time. Changes will be posted within the
-            App or at{' '}
-            <a href={POLICY_URL} rel="noopener noreferrer">
-              {POLICY_URL}
-            </a>
-            .
-          </p>
-        </section>
-
-        <section className="pp-section">
-          <h2 className="pp-h2">8. Contact Us</h2>
-          <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-          <p>
-            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          </p>
-        </section>
+          return (
+            <section key={section.id} className="pp-section">
+              <h2 className="pp-h2">{section.title}</h2>
+              {section.paragraphs?.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+              {section.listItems && (
+                <ul className="pp-list">
+                  {section.listItems.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
       </main>
     </div>
   );
